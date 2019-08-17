@@ -1,0 +1,9 @@
+ ;Procedo a habilitar el portB b4 a b7 como entrada de interrupcion
+    bsf 0x0B, 7
+    bcf 0x0B, 0
+    bsf 0x0B, 3
+
+
+una vez salto a org 0x04
+;Procedo a desabilitar la interrupcion?
+    bcf 0x0B, 0

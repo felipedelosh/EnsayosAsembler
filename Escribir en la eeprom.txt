@@ -1,0 +1,60 @@
+; Escribir cualquier cosa en la eeprom
+
+org 0x0
+; voy al banco 3
+BSF 0x03, 6 ;status.rp1
+BSF 0x03, 5 ;status.rp0
+    
+; miro si la wea esta lista para escritura
+listoWR:
+btfsc 0x18C, 1 ; eecon1.wr
+; si no esta lista se procede a retroceder
+goto listoWR
+
+;me cambio al banco 2
+BCF 0x03, 5 ;status.rp0
+    
+; vamos a escribir en .1
+movlw .1
+    
+; yo voy a decirle a 0x10D Direccion de registro a donde debe de apuntar
+; esta es la direccion de la EEPROM donde voy a escribir
+movwf 0x10D ; EEADR >> .1 // se va a escribir en .1 de la EEPROM
+
+; voy a guardar el 7 de la buena suerte
+movlw .7
+    
+; yo voy a mover del aku a 0x10C
+movwf 0x10C ; EEDATA es .7
+    
+; voy a moverme al bank3
+BSF 0x03, 5 ;status.rp0
+    
+; voy a poner el EECON1.EEPGD = 0
+BCF 0x18C, 7 ; eecon1.eepgd
+    
+; voy a poner el EECON1.WREN = 1
+BSF 0x18C, 2
+    
+; voy a poner el intcon.gie = 0
+BCF 0x18B, 7
+    
+
+; obligatorio
+movlw 0x55
+movwf 0x18D
+movlw 0xAA
+movwf 0x18D
+; obligatoria
+
+BSF 0x18C, 1
+
+
+; voy a poner el intcon.gie = 1
+BSF 0x18B, 7
+    
+; voy a poner el eecon1.wren = 0
+BCF 0x18C, 2
+    
+    
+end

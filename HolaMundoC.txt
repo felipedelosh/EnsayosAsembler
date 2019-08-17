@@ -1,0 +1,53 @@
+/* 
+ * File:   HolaMundo.c
+ * Author: docto
+ *
+ * Created on July 9, 2019, 4:29 PM
+ */
+
+#include <xc.h>
+
+/*
+ * 
+ */
+void main() {
+    TRISB = 0;
+    PORTB = 4;
+}
+
+
+???????????????????????????????????????????????//
+Asi me lo puso esta wea traducido a ensamblador
+
+Disassembly Listing for HolaMundoC
+Generated From:
+C:/Users/docto/MPLABXProjects/HolaMundoC.X/dist/default/debug/HolaMundoC.X.debug.elf
+Jul 9, 2019 4:29:54 PM
+
+---  C:/Users/docto/MPLABXProjects/HolaMundoC.X/HolaMundo.c  --------------------------------------------
+1:             /* 
+2:              * File:   HolaMundo.c
+3:              * Author: docto
+4:              *
+5:              * Created on July 9, 2019, 4:29 PM
+6:              */
+7:             
+8:             #include <xc.h> // esto incluye los puertos y dir para llamarlos por el nombre
+9:             
+10:            /*
+11:             * 
+12:             */
+13:            void main() {
+14:                TRISB = 0;
+07F4  1683     BSF STATUS, 0x5
+07F5  1303     BCF STATUS, 0x6
+07F6  0186     CLRF TRISB
+15:                PORTB = 4;
+07F7  3004     MOVLW 0x4
+07F8  1283     BCF STATUS, 0x5
+07F9  1303     BCF STATUS, 0x6
+07FA  0086     MOVWF PORTB
+16:            }
+07FB  118A     BCF PCLATH, 0x3
+07FC  2800     GOTO 0x0
+17:            

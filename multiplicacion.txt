@@ -1,0 +1,164 @@
+/* 
+ * File:   HolaMundo.c
+ * Author: docto
+ *
+ * Created on July 9, 2019, 4:29 PM
+ */
+
+#include <xc.h>
+
+/*
+ * 
+ */
+void main() {
+    TRISB = 0;
+    int x = 3;
+    int y = 5;
+    int z = x * y;
+    PORTB = z;
+}
+
+
+
+?????????????????????????????????????????????????????????????????????
+
+Disassembly Listing for HolaMundoC
+Generated From:
+C:/Users/docto/MPLABXProjects/HolaMundoC.X/dist/default/debug/HolaMundoC.X.debug.elf
+Jul 9, 2019 4:41:49 PM
+
+---  C:/Users/docto/MPLABXProjects/HolaMundoC.X/HolaMundo.c  --------------------------------------------
+1:             /* 
+2:              * File:   HolaMundo.c
+3:              * Author: docto
+4:              *
+5:              * Created on July 9, 2019, 4:29 PM
+6:              */
+7:             
+8:             #include <xc.h>
+9:             
+10:            /*
+11:             * 
+12:             */
+13:            void main() {
+14:                TRISB = 0;
+07C1  1683     BSF STATUS, 0x5
+07C2  1303     BCF STATUS, 0x6
+07C3  0186     CLRF TRISB
+15:                int x = 3;
+16:                int y = 5;
+17:                int z = x * y;
+07C4  3003     MOVLW 0x3
+07C5  1283     BCF STATUS, 0x5
+07C6  1303     BCF STATUS, 0x6
+07C7  00A0     MOVWF __pcstackBANK0
+07C8  3000     MOVLW 0x0
+07C9  00A1     MOVWF 0x21
+07CA  3005     MOVLW 0x5
+07CB  00A2     MOVWF multiplicand
+07CC  3000     MOVLW 0x0
+07CD  00A3     MOVWF 0x23
+07CE  118A     BCF PCLATH, 0x3
+07CF  27DA     CALL 0x7DA
+07D0  1283     BCF STATUS, 0x5
+07D1  1303     BCF STATUS, 0x6
+07D2  0821     MOVF 0x21, W
+07D3  00AB     MOVWF 0x2B
+07D4  0820     MOVF __pcstackBANK0, W
+07D5  00AA     MOVWF z
+18:                PORTB = z;
+07D6  082A     MOVF z, W
+07D7  0086     MOVWF PORTB
+19:            }
+07D8  118A     BCF PCLATH, 0x3
+07D9  2800     GOTO 0x0
+20:            
+---  C:/Program Files (x86)/Microchip/xc8/v2.05/pic/sources/c90/common/Umul16.c  ------------------------
+1:             // 16 x 16 bit multiplication with 16 bit result
+2:             #ifdef _PIC18
+3:             #define _Has_hardware_multiply 1
+4:             #else
+5:             #define _Has_hardware_multiply 0
+6:             #endif
+7:             
+8:             #if defined(_PIC14E) || defined(_PIC14EX) || defined(_PIC18)
+9:             #define _Has_large_call_stack 1
+10:            #else
+11:            #define _Has_large_call_stack 0
+12:            #endif
+13:            
+14:            unsigned int
+15:            __wmul(unsigned int multiplier, unsigned int multiplicand)
+16:            {
+17:                    unsigned int product;
+18:            
+19:            #if _Has_hardware_multiply || _Has_large_call_stack
+20:            
+21:            #define LOWBYTE(x)  (*(unsigned char *)(&x))
+22:            #define HIGHBYTE(x) (*(((unsigned char *)(&x))+1))
+23:            
+24:            	// optimized to allow use of the 8 x 8 bit hardware multiply instruction
+25:            /*
+26:            a 16-bit multiply can be decomposed into the sum of three 8-bit multiplies
+27:                   a  b
+28:            *      c  d
+29:            -----------
+30:                 |   bd
+31:                 |ad  0
+32:                 |bc  0
+33:            +  ac| 0  0 (we ignore this intermediate product
+34:                         because it does not affect the low 16 bits of the result)
+35:            ===========
+36:             */
+37:                    product =  LOWBYTE(multiplier) * LOWBYTE(multiplicand);
+38:                    product += (LOWBYTE(multiplier) * HIGHBYTE(multiplicand)) << 8;
+39:                    product += (HIGHBYTE(multiplier) * LOWBYTE(multiplicand)) << 8;
+40:            
+41:            #else
+42:            
+43:            	product = 0;
+07DA  1283     BCF STATUS, 0x5
+07DB  1303     BCF STATUS, 0x6
+07DC  01A4     CLRF product
+07DD  01A5     CLRF 0x25
+44:            	do {
+45:            		if(multiplier & 1)
+07DE  1C20     BTFSS __pcstackBANK0, 0x0
+07DF  2FE6     GOTO 0x7E6
+46:            			product += multiplicand;
+07E0  0822     MOVF multiplicand, W
+07E1  07A4     ADDWF product, F
+07E2  1803     BTFSC STATUS, 0x0
+07E3  0AA5     INCF 0x25, F
+07E4  0823     MOVF 0x23, W
+07E5  07A5     ADDWF 0x25, F
+47:            		multiplicand <<= 1;
+07E6  3001     MOVLW 0x1
+07E7  1003     BCF STATUS, 0x0
+07E8  0DA2     RLF multiplicand, F
+07E9  0DA3     RLF 0x23, F
+07EA  3EFF     ADDLW 0xFF
+07EB  1D03     BTFSS STATUS, 0x2
+07EC  2FE7     GOTO 0x7E7
+48:            		multiplier >>= 1;
+07ED  3001     MOVLW 0x1
+07EE  1003     BCF STATUS, 0x0
+07EF  0CA1     RRF 0x21, F
+07F0  0CA0     RRF __pcstackBANK0, F
+07F1  3EFF     ADDLW 0xFF
+07F2  1D03     BTFSS STATUS, 0x2
+07F3  2FEE     GOTO 0x7EE
+49:            	} while(multiplier != 0);
+07F4  0820     MOVF __pcstackBANK0, W
+07F5  0421     IORWF 0x21, W
+07F6  1D03     BTFSS STATUS, 0x2
+07F7  2FDE     GOTO 0x7DE
+50:            
+51:            #endif
+52:                    return product;
+07F8  0825     MOVF 0x25, W
+07F9  00A1     MOVWF 0x21
+07FA  0824     MOVF product, W
+07FB  00A0     MOVWF __pcstackBANK0
+53:            }
+07FC  0008     RETURN

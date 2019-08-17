@@ -1,0 +1,8 @@
+el micro tiene memoria eeprom
+
+EECON1 EECON2
+
+solo tiene un byte de lectura y escritura.
+
+0x18C
+EECON1 EEPGD - - - WRERR WREN WR RD

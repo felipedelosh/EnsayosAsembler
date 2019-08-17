@@ -1,0 +1,91 @@
+/* 
+ * File:   HolaMundo.c
+ * Author: docto
+ *
+ * Created on July 9, 2019, 4:29 PM
+ */
+
+#include <xc.h>
+
+/*
+ * 
+ */
+void main() {
+    TRISB = 0;
+    PORTB = 4;
+    
+    for(int i=0;i<100;i++){
+        PORTB = i;
+    }
+}
+
+
+??????????????????????????????????????????/
+asi me lo tradujo a asembler
+
+
+Disassembly Listing for HolaMundoC
+Generated From:
+C:/Users/docto/MPLABXProjects/HolaMundoC.X/dist/default/debug/HolaMundoC.X.debug.elf
+Jul 9, 2019 4:34:20 PM
+
+---  C:/Users/docto/MPLABXProjects/HolaMundoC.X/HolaMundo.c  --------------------------------------------
+1:             /* 
+2:              * File:   HolaMundo.c
+3:              * Author: docto
+4:              *
+5:              * Created on July 9, 2019, 4:29 PM
+6:              */
+7:             
+8:             #include <xc.h>
+9:             
+10:            /*
+11:             * 
+12:             */
+13:            void main() {
+14:                TRISB = 0;
+07DD  1683     BSF STATUS, 0x5
+07DE  1303     BCF STATUS, 0x6
+07DF  0186     CLRF TRISB
+15:                PORTB = 4;
+07E0  3004     MOVLW 0x4
+07E1  1283     BCF STATUS, 0x5
+07E2  1303     BCF STATUS, 0x6
+07E3  0086     MOVWF PORTB
+16:                
+17:                for(int i=0;i<100;i++){
+07E4  01A0     CLRF __pcstackBANK0
+07E5  01A1     CLRF 0x21
+18:                    PORTB = i;
+07E6  1283     BCF STATUS, 0x5
+07E7  1303     BCF STATUS, 0x6
+07E8  0820     MOVF __pcstackBANK0, W
+07E9  0086     MOVWF PORTB
+19:                }
+07EA  3001     MOVLW 0x1
+07EB  07A0     ADDWF __pcstackBANK0, F
+07EC  1803     BTFSC STATUS, 0x0
+07ED  0AA1     INCF 0x21, F
+07EE  3000     MOVLW 0x0
+07EF  07A1     ADDWF 0x21, F
+07F0  0821     MOVF 0x21, W
+07F1  3A80     XORLW 0x80
+07F2  00FF     MOVWF 0x7F
+07F3  3080     MOVLW 0x80
+07F4  027F     SUBWF 0x7F, W
+07F5  1D03     BTFSS STATUS, 0x2
+07F6  2FF9     GOTO 0x7F9
+07F7  3064     MOVLW 0x64
+07F8  0220     SUBWF __pcstackBANK0, W
+07F9  1C03     BTFSS STATUS, 0x0
+07FA  2FE6     GOTO 0x7E6
+20:            }
+07FB  118A     BCF PCLATH, 0x3
+07FC  2800     GOTO 0x0
+21:            
+
+
+
+__pcstackBANK0 : hace referencia al i que itera y lo puso en 0x20
+
+

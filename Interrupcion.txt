@@ -1,0 +1,2 @@
+es una entrada adicional del microprocesador.
+tiene prioridad, se interrumpe lo que se este haciendo.

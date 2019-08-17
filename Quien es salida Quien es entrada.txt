@@ -1,0 +1,2 @@
+0 : salida
+1 : entrada

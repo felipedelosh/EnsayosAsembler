@@ -1,0 +1,20 @@
+exite el optionreg
+
+ps2:ps0
+
+1:?   osea: cada instruccion tarda ? microsegundos.
+
+	?=256 1 instruccion tarda 256 microsegundos
+
+
+Existe TMR0 0x01... si quiero contar 100 microsegundos?
+
+	el cuenta desde 0 a 255 ... 
+	si el empieza siempre en 156 ... cuando llegue a 255 va a disparar la bandera.
+	con ello habran pasado 100 instrucciones entonces si cada instruccion tarda
+	1 microsegundo ya han pasado 100 microsegundos.
+
+
+Entonces como hacemos para hacer un cronometro?
+
+ver carpeta: cronometro

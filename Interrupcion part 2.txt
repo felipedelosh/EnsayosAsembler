@@ -1,0 +1,5 @@
+Existe:
+
+OPTION_REG que es para capturar interrupciones en blancos de bajada o de subida.
+
+Existe el RETFIE "El return de la interrupcion"
